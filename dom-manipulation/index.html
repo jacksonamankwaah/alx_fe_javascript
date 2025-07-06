@@ -17,14 +17,15 @@
   <!-- Quote Display Area -->
   <div id="quoteDisplay"></div>
 
-  <!-- Button to Show a Random Quote -->
-  <button id="newQuote">Show New Quote</button>
+  <!-- Notification Area for Sync -->
+  <div id="notification" style="color: green; margin-top: 10px;"></div>
 
-  <!-- Export and Import -->
+  <!-- Buttons for Interaction -->
+  <button id="newQuote">Show New Quote</button>
   <button onclick="exportToJson()">Export Quotes</button>
   <input type="file" accept=".json" onchange="importFromJsonFile(event)" />
 
-  <!-- JS File -->
+  <!-- The add quote form will be created by JS -->
   <script src="script.js"></script>
 </body>
 </html>
