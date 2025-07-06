@@ -1,7 +1,7 @@
-// Replace with your actual raw JSON URL from GitHub or similar host
+// 🔁 Replace this with your real hosted JSON file (e.g., from GitHub)
 const SERVER_URL = "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/quotes.json";
 
-// Local storage for quotes
+// ✅ Quotes from localStorage or default set
 let quotes = JSON.parse(localStorage.getItem("quotes")) || [
   { text: "Believe in yourself.", category: "Motivation" },
   { text: "Stay curious.", category: "Education" },
@@ -10,12 +10,12 @@ let quotes = JSON.parse(localStorage.getItem("quotes")) || [
 
 let selectedCategory = "all";
 
-// Save to localStorage
+// ✅ Save quotes to local storage
 function saveQuotes() {
   localStorage.setItem("quotes", JSON.stringify(quotes));
 }
 
-// Create quote form dynamically
+// ✅ Create a form for adding new quotes
 function createAddQuoteForm() {
   const textInput = document.createElement("input");
   textInput.type = "text";
@@ -39,7 +39,7 @@ function createAddQuoteForm() {
   document.body.appendChild(formDiv);
 }
 
-// Add a quote
+// ✅ Add a new quote from form input
 function addQuote() {
   const textInput = document.getElementById("newQuoteText");
   const categoryInput = document.getElementById("newQuoteCategory");
@@ -59,7 +59,7 @@ function addQuote() {
   }
 }
 
-// Show a random quote based on current filter
+// ✅ Show a random quote from the selected category
 function showRandomQuote() {
   const filtered = selectedCategory === "all"
     ? quotes
@@ -77,7 +77,7 @@ function showRandomQuote() {
   }
 }
 
-// Export quotes
+// ✅ Export quotes to a JSON file
 function exportToJson() {
   const blob = new Blob([JSON.stringify(quotes, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -89,7 +89,7 @@ function exportToJson() {
   URL.revokeObjectURL(url);
 }
 
-// Import quotes from file
+// ✅ Import quotes from a JSON file
 function importFromJsonFile(event) {
   const fileReader = new FileReader();
   fileReader.onload = function (e) {
@@ -110,7 +110,7 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-// Populate categories
+// ✅ Populate category filter dropdown
 function populateCategories() {
   const select = document.getElementById("categoryFilter");
   const categories = ["all", ...new Set(quotes.map(q => q.category))];
@@ -131,15 +131,15 @@ function populateCategories() {
   }
 }
 
-// Filter quotes when dropdown changes
+// ✅ Update the selected category and display quotes
 function filterQuotes() {
   selectedCategory = document.getElementById("categoryFilter").value;
   localStorage.setItem("lastSelectedCategory", selectedCategory);
   showRandomQuote();
 }
 
-// 🔁 SYNC: Fetch quotes from server and merge
-function syncWithServer() {
+// ✅ Fetch quotes from server and merge with local
+function fetchQuotesFromServer() {
   fetch(SERVER_URL)
     .then(response => response.json())
     .then(serverQuotes => {
@@ -165,7 +165,7 @@ function syncWithServer() {
     });
 }
 
-// Show temporary notification
+// ✅ Show temporary notification to user
 function showNotification(message, isError = false) {
   const div = document.getElementById("notification");
   div.textContent = message;
@@ -175,7 +175,7 @@ function showNotification(message, isError = false) {
   }, 4000);
 }
 
-// On page load
+// ✅ Initialize on page load
 window.onload = function () {
   createAddQuoteForm();
   populateCategories();
@@ -190,9 +190,9 @@ window.onload = function () {
   }
 
   // Start syncing with server
-  syncWithServer();
-  setInterval(syncWithServer, 30000); // every 30 seconds
+  fetchQuotesFromServer();
+  setInterval(fetchQuotesFromServer, 30000);
 };
 
-// Event listener
+// ✅ Attach click handler for "Show New Quote" button
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
