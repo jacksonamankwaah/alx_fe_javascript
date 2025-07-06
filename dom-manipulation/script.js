@@ -139,31 +139,32 @@ function filterQuotes() {
 }
 
 // ✅ Fetch quotes from server and merge with local
-function fetchQuotesFromServer() {
-  fetch(SERVER_URL)
-    .then(response => response.json())
-    .then(serverQuotes => {
-      let addedCount = 0;
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch(SERVER_URL);
+    const serverQuotes = await response.json();
 
-      serverQuotes.forEach(serverQuote => {
-        const exists = quotes.some(local => local.text === serverQuote.text);
-        if (!exists) {
-          quotes.push(serverQuote);
-          addedCount++;
-        }
-      });
+    let addedCount = 0;
 
-      if (addedCount > 0) {
-        saveQuotes();
-        populateCategories();
-        showNotification(`${addedCount} new quote(s) synced from server.`);
+    serverQuotes.forEach(serverQuote => {
+      const exists = quotes.some(local => local.text === serverQuote.text);
+      if (!exists) {
+        quotes.push(serverQuote);
+        addedCount++;
       }
-    })
-    .catch(error => {
-      showNotification("Failed to sync with server.", true);
-      console.error("Server sync error:", error);
     });
+
+    if (addedCount > 0) {
+      saveQuotes();
+      populateCategories();
+      showNotification(`${addedCount} new quote(s) synced from server.`);
+    }
+  } catch (error) {
+    showNotification("Failed to sync with server.", true);
+    console.error("Server sync error:", error);
+  }
 }
+
 
 // ✅ Show temporary notification to user
 function showNotification(message, isError = false) {
